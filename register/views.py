@@ -1,0 +1,91 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
+from register.forms import UpdateForm
+from django.contrib.auth import logout as lt
+from django.contrib import messages
+from django.contrib.auth.models import User
+
+
+def signup(request):
+
+    form = UserCreationForm(request.POST or None)   # получение готовой формы, принимающей пост запрос или ничего
+
+    if request.method == 'POST':    # если метод запроса пост
+
+        if form.is_valid():         # если форма валидна
+
+            new_user = form.save()  # сохранение формы в бд
+            
+            login(request, new_user)    # функция для логина юзера 
+            
+            return redirect('update_profile')
+
+    context = {
+        'form': form, 
+        'title': 'Signup',
+    }
+
+    return render(request, 'register/signup.html', context=context)
+
+
+def signin(request):
+
+    form = AuthenticationForm(request, data=request.POST)
+
+    if request.method == "POST":
+
+        if form.is_valid():
+
+            user = form.cleaned_data.get("username")
+
+            password = form.cleaned_data.get("password")
+
+            user = authenticate(username=user, password=password)
+
+            if user is not None:
+
+                login(request, user)
+
+                return redirect("home_page")
+
+    context = {
+        'form': form,
+        'title': 'Signin',
+    }
+
+    return render(request, 'register/signin.html', context=context)
+
+
+@login_required
+def update_profile(request):
+
+    user = request.user 
+
+    form = UpdateForm(request.POST, request.FILES)
+
+    if request.method == "POST":
+
+        if form.is_valid():
+
+            update_profile = form.save(commit=False)
+            update_profile.user = user
+            update_profile.save()
+
+            return redirect('home_page')
+
+    context = {
+        'form': form,
+        'title': 'Update Profile',
+    }
+
+    return render(request, 'register/update.html', context=context)
+
+
+@login_required
+def logout(request):
+
+    lt(request)
+
+    return redirect('home_page')
