@@ -132,11 +132,11 @@ header{
 .navbar{
     display:flex;
     align-items: center;
+    margin-top: -20px;
 }
 
 .navigation{
     background-color: #292B2E;
-    /* background-color:#52057b; */
     padding: 10px;
     width: 65%;
     display: inline-block;
