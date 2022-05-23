@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Author, Post
 
 
 class PostForm(forms.ModelForm):
@@ -8,4 +8,13 @@ class PostForm(forms.ModelForm):
     class Meta:
 
         model = Post
-        fields = ["title", "content", "cat", "tags"]
+        fields = ['title', 'content', 'cat', 'tags']
+
+
+class ForumUserForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Author
+        fields = ['fullname', 'bio', 'profile_pic']
+        exclude = ['user']

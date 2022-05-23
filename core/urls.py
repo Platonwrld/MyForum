@@ -11,7 +11,8 @@ urlpatterns = [
     path('detail-page/<slug>/', detail_page, name='detail_page'),
     path('create-post/', create_post, name="create_post"),
     path('latests-posts/', latests_posts, name='latests_post'),
-    path('search-results/', search_page, name='search_page')
+    path('search-results/', search_page, name='search_page'),
+    path('my-cabinet/<slug:slug_us>/', local_cabinet, name='cabinet'),
 ]
 
 if settings.DEBUG:      #для того, чтобы в режиме отладки ко всем маршрутам добавлялся маршрут с графическими файлами

@@ -11,6 +11,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 def home_page(request):
 
+    username = request.user.username
+
     categories = Category.objects.all()
 
     posts = Post.objects.all()
@@ -20,6 +22,8 @@ def home_page(request):
     num_users = User.objects.all().count()
     
     num_categories = categories.count()
+
+    authors = Author.objects.all()
     
     try:
         last_post = Post.objects.latest("date")
@@ -33,7 +37,9 @@ def home_page(request):
         'num_users': num_users,
         'num_categories': num_categories,
         'last_post': last_post,
-        'title': 'Home page'
+        'title': 'Home page',
+        'authors': authors,
+        'username': username,
     }
 
     return render(request, 'home_page.html', context=context)
@@ -151,3 +157,28 @@ def latests_posts(request):
 def search_page(request):
 
     return render(request, 'search_page.html')
+
+
+def local_cabinet(request, slug_us):
+
+    user_id = request.user.id
+
+    forumuser = Author.objects.get(slug=slug_us)
+
+    # get_user = request.user.author
+
+    form = ForumUserForm(instance=forumuser)
+
+    if request.method == 'POST':
+       form = ForumUserForm(request.POST, request.FILES, instance=forumuser) 
+       if form.is_valid:
+           form.save()
+
+    context = {
+
+        'forumuser': forumuser,
+        'form': form,
+
+    }
+
+    return render(request, 'local_cabinet.html', context=context)

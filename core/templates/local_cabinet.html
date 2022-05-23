@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<br>
+
+<div class="container" style="background-color: black;">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card card-body">
+                <h3 style="text-align: center">Account Settings</h3>
+                <hr>
+                <img class="profile-pic" src="{{ forumuser.profile_pic.url }}">
+            
+            </div>
+        </div>
+<!-- 
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Information</h5>
+                <hr>
+                <p>Nickname: {{ forumuser.fullname }}</p>
+                <p>Biography: {{ forumuser.bio }}</p>
+            </div>
+        </div> -->
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-primary" type="submit" name="Update Information">
+        </form>
+
+        <hr>
+
+                <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'home_page' %}">Back to home</a>
+                <hr>
+    </div>
+
+    <br>
+</div>
+
+{% endblock content %}

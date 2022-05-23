@@ -62,7 +62,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
+
+""" For auto logout """
+SESSION_EXPIRE_SECONDS = 1000
+SESSION_TIMEOUT_REDIRECT = '/'
+
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+# AUTO_LOGOUT_DELAY = 1
 
 ROOT_URLCONF = 'forum.urls'
 
